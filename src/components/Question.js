@@ -1,6 +1,6 @@
 
-function Question() {
-  
+function Question(props) {
+  console.log(props)
 
   return (
     <div> 
