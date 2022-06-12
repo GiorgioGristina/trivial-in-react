@@ -8,37 +8,30 @@ import { useEffect, useState } from 'react';
 function App() {
   const [started, setStarted] = useState(false)
   const [questionAnswer, setQuestionAnswer] = useState([])
+
   
   // const answerShuf = []
   useEffect(() => {
     fetch("https://opentdb.com/api.php?amount=5&category=22&difficulty=medium&type=multiple")
     .then(res => res.json())
     .then(data => setQuestionAnswer(data.results))
-    console.log("effect");
-    // shuffleAnswer(questionAnswer[0].correct_answer, questionAnswer[0].incorrect_answers)
+    
   }, [])
-  // console.log(questionAnswer);
 
-
-
+  function handleClick(e){
+    console.log(e.target.innerText)
+  }
+ 
   function startGame(){    
     setStarted(oldStart => !oldStart)
   }
 
   const questionElements = questionAnswer.map((question) => {
-    return <Question question={question.question} answersCorrect={question.correct_answer} answerIncorrect={question.incorrect_answers} />
+    return <Question click={handleClick}
+                     question={question.question} 
+                     answerCorrect={question.correct_answer} 
+                     answersIncorrect={question.incorrect_answers} />
   })
-
-  // function shuffleAnswer(correct, incorrect){
-  //   // console.log(correct, incorrect);
-  //   let answer = [correct, ...incorrect];
-  //   console.log(answer);
-
-  //   // return answer
-  // }
-
-  // shuffleAnswer(questionAnswer[0].correct_answer, questionAnswer[0].incorrect_answers)
-  // // console.log(questionAnswer.correct_answer)
 
   return (
     <section className='container'>
