@@ -1,6 +1,6 @@
 import Button from './components/Button';
 import Question from './components/Question';
-
+import { nanoid } from 'nanoid'
 import './App.css';
 import { useEffect, useState } from 'react';
 
@@ -35,7 +35,7 @@ function App() {
 
       const arrayObj = answerOption.map((answer, i) => {
         return {
-          id: i,
+          id: nanoid(),
           answer: answer,
           selected: false
         }
@@ -62,7 +62,7 @@ function App() {
 
 
 
-  // console.log(question);
+  // console.log(question.answers);
 
   function handleClick(e){
     // on click take the value store in a variable

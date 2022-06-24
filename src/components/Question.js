@@ -1,7 +1,7 @@
 
 function Question({question, answers, click}) {  
  
-  console.log(answers);
+  console.log(answers[0].id);
   return (
     <div> 
       <h3>{question}</h3>
