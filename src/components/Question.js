@@ -1,7 +1,7 @@
 
 function Question({question, answers, click}) {  
  
-  
+  console.log(answers);
   return (
     <div> 
       <h3>{question}</h3>

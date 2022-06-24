@@ -9,6 +9,7 @@ function App() {
   const [started, setStarted] = useState(false)
   const [data, setData] = useState([])
   const [ question, setQuestions] = useState([])
+  const [ selectedAnswer, setSelectedAnswer] = useState([])
   // const [isContainerActive, setIsContainerActive] = useState(false);
   // const answerShuf = []
   useEffect(() => {
@@ -29,27 +30,30 @@ function App() {
       return newArray;   
     }
     function generateAnswerObj(data){
-      const answerOption = generateAnswer(data)
-      answerOption.map((answer, i) => {
+      let answerOption = [...generateAnswer(data)]
+      // console.log(answerOption);
+
+      const arrayObj = answerOption.map((answer, i) => {
         return {
           id: i,
           answer: answer,
           selected: false
         }
       })
-      return data
+      return arrayObj
+      
     }
-    const generateQuestionOBject = (object) => {
+    const generateQuestionObject = (object) => {
       return {
         question: object.question,
         correctAnswer: object.correct_answer,
         answers: generateAnswerObj(object)
       }
     }
-    setQuestions( data.map((item) => generateQuestionOBject(item)))
+    setQuestions( data.map((item) => generateQuestionObject(item)))
   }, [data])
   
-  console.log(question);
+  // console.log(question);
   // console.log(data);
   // data.map((obj => {
   //   generateAnswer(obj)
@@ -61,31 +65,37 @@ function App() {
   // console.log(question);
 
   function handleClick(e){
-    // // console.log()
-    // // e.target.className("active")
-    // console.log(e.currentTarget);
-    // setIsContainerActive(prev => !prev)
+    // on click take the value store in a variable
+      // const selectedElemetntValue = e.target.textContent
+      // console.log(selectedElemetntValue);
+    // loop throug the questions and turn select to true the answer that have the same answer value
+    // and setAnswerSelected will add the answer 
   }
  
   function startGame(){    
     setStarted(oldStart => !oldStart)
   }
 
-  // const questionElements = questionAnswer.map((question, index) => {
-  //   return <Question click={handleClick}
-  //                    key={index}
-  //                    activeContainer={isContainerActive}
-  //                    question={question.question} 
-  //                    answers={question.option} 
-  //                     />
-  // })
+  const questionElements = question.map((question, index) => {
+    return <Question click={handleClick}
+                     key={index}
+                    //  activeContainer={isContainerActive}
+                     question={question.question} 
+                     answers={question.answers} 
+                      />
+  })
 
   return (
     <section className='container'>
       { !started && <Button start={startGame}  className="start-button"/>}
-      {/* {started && questionElements} */}
+      {started && questionElements}
     </section>
   );
 }
 
 export default App;
+
+
+// TIPS 
+// - at the generate answer obj I would add also if is the correct answer so wen click 
+// - if selected true add bcgrouncolor to green
