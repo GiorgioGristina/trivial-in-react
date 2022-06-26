@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 function App() {
   const [started, setStarted] = useState(false)
   const [data, setData] = useState([])
-  const [ question, setQuestions] = useState([])
+  const [ questions, setQuestions] = useState([])
   const [ selectedAnswer, setSelectedAnswer] = useState([])
   // const [isContainerActive, setIsContainerActive] = useState(false);
   // const answerShuf = []
@@ -20,7 +20,7 @@ function App() {
     }
   }, [started])
 
-  useEffect(() => {
+  useEffect(() => {   
     function generateAnswer(data){
       const correct = data.correct_answer
       let incorrect = data.incorrect_answers
@@ -32,7 +32,7 @@ function App() {
     function generateAnswerObj(data){
       let answerOption = [...generateAnswer(data)]
       // console.log(answerOption);
-
+  
       const arrayObj = answerOption.map((answer, i) => {
         return {
           id: nanoid(),
@@ -45,14 +45,16 @@ function App() {
     }
     const generateQuestionObject = (object) => {
       return {
+        id: nanoid(),
         question: object.question,
         correctAnswer: object.correct_answer,
         answers: generateAnswerObj(object)
       }
     }
+    
     setQuestions( data.map((item) => generateQuestionObject(item)))
   }, [data])
-  
+
   // console.log(question);
   // console.log(data);
   // data.map((obj => {
@@ -63,25 +65,38 @@ function App() {
 
 
   // console.log(question.answers);
-
-  function handleClick(e){
+ 
+  
+  // console.log(questions);
+  function handleClick(questionId, answerId){
     // on click take the value store in a variable
       // const selectedElemetntValue = e.target.textContent
       // console.log(selectedElemetntValue);
     // loop throug the questions and turn select to true the answer that have the same answer value
     // and setAnswerSelected will add the answer 
+   setQuestions(oldQuestion => {
+      console.log(oldQuestion);
+   })
+
   }
- 
+  
+  
+
+  
+
+
   function startGame(){    
     setStarted(oldStart => !oldStart)
   }
 
-  const questionElements = question.map((question, index) => {
-    return <Question click={handleClick}
-                     key={index}
+  const questionElements = questions.map((question) => {
+    return <Question click={(e) => handleClick(question.id, e.target.id)}
+                     key={question.id}
+                     id={question.id}
                     //  activeContainer={isContainerActive}
                      question={question.question} 
-                     answers={question.answers} 
+                     answers={question.answers}
+                     setQuestions={setQuestions} 
                       />
   })
 
