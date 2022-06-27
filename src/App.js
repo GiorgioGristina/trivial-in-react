@@ -9,16 +9,26 @@ function App() {
   const [started, setStarted] = useState(false)
   const [data, setData] = useState([])
   const [ questions, setQuestions] = useState([])
-  const [ selectedAnswer, setSelectedAnswer] = useState([])
+  // const [ selectedAnswer, setSelectedAnswer] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState()
   // const [isContainerActive, setIsContainerActive] = useState(false);
   // const answerShuf = []
   useEffect(() => {
     if (started) {
+      setLoading(true)
       fetch("https://opentdb.com/api.php?amount=5&category=22&difficulty=medium&type=multiple")
       .then(res => res.json())
-      .then(data => setData(data.results))     
+      .then(data => setData(data.results)) 
+      .catch(error => setError(error) )
+      .finally(() => setLoading(false))  
     }
   }, [started])
+
+  
+  // console.log("start", started);
+  // console.log("error", error);
+
 
   useEffect(() => {   
     function generateAnswer(data){
@@ -54,8 +64,15 @@ function App() {
     
     setQuestions( data.map((item) => generateQuestionObject(item)))
   }, [data])
-
+  
   // console.log(question);
+  if (loading) {
+    return <p>data is loading</p>
+  }
+
+  if (error ) {
+    return <p>there was an error loading the quiz question</p>
+  }
   // console.log(data);
   // data.map((obj => {
   //   generateAnswer(obj)
@@ -74,12 +91,39 @@ function App() {
       // console.log(selectedElemetntValue);
     // loop throug the questions and turn select to true the answer that have the same answer value
     // and setAnswerSelected will add the answer 
-   setQuestions(oldQuestion => {
-      console.log(oldQuestion);
-   })
+    
+    setQuestions(oldQuestion => {
+      return oldQuestion.map((question) => {
+        if (question.id !== questionId) {          
+          return question
+        } else {
+          return {
+            ...question,
+            answers: question.answers.map((ans) => {
+              if (ans.id !== answerId) {              
+                return {
+                  id: ans.id,
+                  answer: ans.answer,
+                  selected: false
+                }
+              } else {
+                return {
+                  ...ans,
+                  selected: true
+                }
+              }
+            })
+          }
+          
+        }
+      })
+     
 
-  }
+  })
   
+}
+
+console.log(questions);
   
 
   
@@ -90,9 +134,10 @@ function App() {
   }
 
   const questionElements = questions.map((question) => {
+    // console.log(question.id);
     return <Question click={(e) => handleClick(question.id, e.target.id)}
                      key={question.id}
-                     id={question.id}
+                    //  questionId={question.id}
                     //  activeContainer={isContainerActive}
                      question={question.question} 
                      answers={question.answers}
