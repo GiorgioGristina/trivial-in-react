@@ -9,7 +9,7 @@ function App() {
   const [started, setStarted] = useState(false)
   const [data, setData] = useState([])
   const [ questions, setQuestions] = useState([])
-  // const [ selectedAnswer, setSelectedAnswer] = useState([])
+  const [ selectedAnswer, setSelectedAnswer] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
   // const [isContainerActive, setIsContainerActive] = useState(false);
@@ -107,6 +107,8 @@ function App() {
                   selected: false
                 }
               } else {
+                // console.log(ans.id);
+                setSelectedAnswer(oldAnswer => [...oldAnswer, ans.id])
                 return {
                   ...ans,
                   selected: true
@@ -123,7 +125,7 @@ function App() {
   
 }
 
-console.log(questions);
+console.log(selectedAnswer);
   
 
   

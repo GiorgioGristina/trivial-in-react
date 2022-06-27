@@ -1,3 +1,4 @@
+import "./Question.css"
 
 function Question({questionId, question, answers, click}) {  
 //  set the state of the select answer in question component
