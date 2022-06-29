@@ -14,7 +14,9 @@ function App() {
   const [error, setError] = useState()
   const [counterCorrectAnswer, setCounterCorrectAnswer] = useState(0)
   const [buttonClicked, setButtonClicked] = useState(false)
-  
+  // i would create a state that contain an array of correct answer ids for the 
+  //question where he select the wrong one so when they click check answer button
+  // will be highlited in red the correct when when the user picke d the correct one
   useEffect(() => {
     if (started) {
       setLoading(true)
@@ -138,9 +140,7 @@ function App() {
     setStarted(oldStart => !oldStart)
   }
 
-  function CheckAnswer(){
-    
-    
+  function CheckAnswer(){   
     questions.forEach((question) => {
       // console.log(question);
       selectedAnswer.forEach((answ) => {
@@ -152,7 +152,7 @@ function App() {
     setButtonClicked(true)
   }
 
-  console.log(counterCorrectAnswer);
+  
   const questionElements = questions.map((question) => {
     // console.log(question.id);
     return <Question click={(e) => handleClick(question.id, e.target.id)}
