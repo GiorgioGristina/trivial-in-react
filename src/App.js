@@ -25,11 +25,6 @@ function App() {
     }
   }, [started])
 
-  
-  // console.log("start", started);
-  // console.log("error", error);
-
-
   useEffect(() => {   
     function generateAnswer(data){
       const correct = data.correct_answer
@@ -65,6 +60,23 @@ function App() {
     setQuestions( data.map((item) => generateQuestionObject(item)))
   }, [data])
   
+// WORK ON THE SELCT ANSWERSTATE ----------------------------------------
+  useEffect(() => {
+      // check if selected true and add the answer id to array
+      let arrayOfSelectedAnswer= []
+      questions.forEach((quest) => {
+        quest.answers.forEach((ans) => {
+          if (ans.selected){
+            arrayOfSelectedAnswer.push(ans.id)
+          }
+        })
+        
+      })
+      setSelectedAnswer(arrayOfSelectedAnswer)
+   
+  }, [questions])
+  console.log(selectedAnswer);
+  // ----------------------------------------------------------------
   // console.log(question);
   if (loading) {
     return <p>data is loading</p>
@@ -100,15 +112,13 @@ function App() {
           return {
             ...question,
             answers: question.answers.map((ans) => {
-              if (ans.id !== answerId) {              
+              if (ans.id !== answerId) {            
                 return {
                   id: ans.id,
                   answer: ans.answer,
                   selected: false
                 }
-              } else {
-                // console.log(ans.id);
-                setSelectedAnswer(oldAnswer => [...oldAnswer, ans.id])
+              } else {                
                 return {
                   ...ans,
                   selected: true
@@ -125,7 +135,7 @@ function App() {
   
 }
 
-console.log(selectedAnswer);
+// console.log(selectedAnswer);
   
 
   
