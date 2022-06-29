@@ -12,6 +12,8 @@ function App() {
   const [ selectedAnswer, setSelectedAnswer] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
+  const [counterCorrectAnswer, setCounterCorrectAnswer] = useState(0)
+  const [buttonClicked, setButtonClicked] = useState(false)
   // const [isContainerActive, setIsContainerActive] = useState(false);
   // const answerShuf = []
   useEffect(() => {
@@ -67,7 +69,11 @@ function App() {
       questions.forEach((quest) => {
         quest.answers.forEach((ans) => {
           if (ans.selected){
-            arrayOfSelectedAnswer.push(ans.id)
+            arrayOfSelectedAnswer.push({answerId: ans.id,
+                                        answer: ans.answer,
+                                        questionId: quest.id,
+                                        correct: ans.answer === quest.correctAnswer
+                                                })
           }
         })
         
@@ -98,12 +104,6 @@ function App() {
   
   // console.log(questions);
   function handleClick(questionId, answerId){
-    // on click take the value store in a variable
-      // const selectedElemetntValue = e.target.textContent
-      // console.log(selectedElemetntValue);
-    // loop throug the questions and turn select to true the answer that have the same answer value
-    // and setAnswerSelected will add the answer 
-    
     setQuestions(oldQuestion => {
       return oldQuestion.map((question) => {
         if (question.id !== questionId) {          
@@ -135,22 +135,29 @@ function App() {
   
 }
 
-// console.log(selectedAnswer);
-  
-
-  
-
-
   function startGame(){    
     setStarted(oldStart => !oldStart)
   }
 
+  function CheckAnswer(){
+    
+    
+    questions.forEach((question) => {
+      // console.log(question);
+      selectedAnswer.forEach((answ) => {
+        if (question.correctAnswer === answ.answer ) {
+          setCounterCorrectAnswer(oldCount => oldCount + 1)
+        }
+      })
+    })
+    setButtonClicked(true)
+  }
+
+  console.log(counterCorrectAnswer);
   const questionElements = questions.map((question) => {
     // console.log(question.id);
     return <Question click={(e) => handleClick(question.id, e.target.id)}
                      key={question.id}
-                    //  questionId={question.id}
-                    //  activeContainer={isContainerActive}
                      question={question.question} 
                      answers={question.answers}
                      setQuestions={setQuestions} 
@@ -159,8 +166,12 @@ function App() {
 
   return (
     <section className='container'>
-      { !started && <Button start={startGame}  className="start-button"/>}
+      { !started && <Button clickHandler={startGame} text="Start Quiz" className="start-button"/>}
       {started && questionElements}
+      <div>
+        {started && <Button  clickHandler={CheckAnswer} text={buttonClicked ? "Play again" : "Check answers"} className="start-button"/>}
+        {buttonClicked && <p>You scored {counterCorrectAnswer}/5 correct answers</p>}
+      </div>
     </section>
   );
 }

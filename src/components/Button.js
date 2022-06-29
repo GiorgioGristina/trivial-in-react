@@ -1,8 +1,8 @@
 
-function Button(props) {
+function Button({clickHandler, text}) {
   return (
     
-    <button onClick={props.start}>Stat Quiz</button>
+    <button onClick={clickHandler}>{text}</button>
   );
 }
 
