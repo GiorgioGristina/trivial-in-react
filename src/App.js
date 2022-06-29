@@ -14,8 +14,7 @@ function App() {
   const [error, setError] = useState()
   const [counterCorrectAnswer, setCounterCorrectAnswer] = useState(0)
   const [buttonClicked, setButtonClicked] = useState(false)
-  // const [isContainerActive, setIsContainerActive] = useState(false);
-  // const answerShuf = []
+  
   useEffect(() => {
     if (started) {
       setLoading(true)
