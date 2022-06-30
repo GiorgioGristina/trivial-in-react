@@ -3,7 +3,7 @@ import "./Question.css"
 function Question({questionId, question, answers, click}) {  
 
   const answerElements = answers.map((answer) => {
-    return <li  id={answer.id} className={ answer.selected ? "active" : "" } onClick={click}>{answer.answer}</li>
+    return <li key={answer.id} id={answer.id} className={ answer.selected ? "active" : "" } onClick={click}>{answer.answer}</li>
   })
 
   return (
