@@ -27,7 +27,7 @@ function App() {
       .finally(() => setLoading(false))  
     }
   }, [started])
-
+  console.log(data);
   useEffect(() => {   
     function generateAnswer(data){
       const correct = data.correct_answer
@@ -39,13 +39,16 @@ function App() {
     }
     function generateAnswerObj(data){
       let answerOption = [...generateAnswer(data)]
-      // console.log(answerOption);
+      let correctAnswer = data.correct_answer
+      // console.log(correctAnswer);
   
       const arrayObj = answerOption.map((answer, i) => {
+        // console.log(questions);
         return {
           id: nanoid(),
           answer: answer,
-          selected: false
+          selected: false,
+          correct: answer === correctAnswer
         }
       })
       return arrayObj
@@ -69,11 +72,15 @@ function App() {
       let arrayOfSelectedAnswer= []
       questions.forEach((quest) => {
         quest.answers.forEach((ans) => {
+          
+          
           if (ans.selected){
+            // console.log(ans.answer,quest.correctAnswer );
             arrayOfSelectedAnswer.push({answerId: ans.id,
                                         answer: ans.answer,
                                         questionId: quest.id,
-                                        correct: ans.answer === quest.correctAnswer
+                                        correct: quest.correctAnswer === ans.answer,
+                                        showCorrect: false
                                                 })
           }
         })
@@ -82,9 +89,9 @@ function App() {
       setSelectedAnswer(arrayOfSelectedAnswer)
    
   }, [questions])
-  console.log(selectedAnswer);
-  // ----------------------------------------------------------------
-  // console.log(question);
+// console.log(selectedAnswer);
+  
+  
   if (loading) {
     return <p>data is loading</p>
   }
@@ -92,18 +99,7 @@ function App() {
   if (error ) {
     return <p>there was an error loading the quiz question</p>
   }
-  // console.log(data);
-  // data.map((obj => {
-  //   generateAnswer(obj)
-
-  // }))
-
-
-
-  // console.log(question.answers);
- 
   
-  // console.log(questions);
   function handleClick(questionId, answerId){
     setQuestions(oldQuestion => {
       return oldQuestion.map((question) => {
@@ -140,25 +136,37 @@ function App() {
     setStarted(oldStart => !oldStart)
   }
 
-  function CheckAnswer(){   
-    questions.forEach((question) => {
+  // setSelectedAnswer(oldSelection => [...oldSelection, {...answ, showCorrect: true}])
+
+  function CheckAnswer(){ 
+    let newSelectedAnswe = []  
+    
       // console.log(question);
-      selectedAnswer.forEach((answ) => {
-        if (question.correctAnswer === answ.answer ) {
-          setCounterCorrectAnswer(oldCount => oldCount + 1)
-        }
+      selectedAnswer.forEach((answ, i) => {    
+          if (answ.correct ) {
+            setCounterCorrectAnswer(oldCount => oldCount + 1)
+            newSelectedAnswe.push(answ)
+          } else {
+            newSelectedAnswe.push({...answ, showCorrect: true})
+          }
+
+       
       })
-    })
+   
+    // console.log(newSelectedAnswe);
+    setSelectedAnswer(newSelectedAnswe)
     setButtonClicked(true)
   }
-
+// console.log(selectedAnswer);
   
-  const questionElements = questions.map((question) => {
+  const questionElements = questions.map((question, i) => {
     // console.log(question.id);
     return <Question click={(e) => handleClick(question.id, e.target.id)}
                      key={question.id}
+                     index={i}
                      question={question.question} 
                      answers={question.answers}
+                     selctedAnswer={selectedAnswer}
                      setQuestions={setQuestions} 
                       />
   })

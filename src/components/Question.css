@@ -1,3 +1,7 @@
 .active{
   background-color: rgb(174, 232, 174);
 }
+
+.correct{
+  background-color: red;
+}
