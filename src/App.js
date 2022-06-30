@@ -14,9 +14,7 @@ function App() {
   const [error, setError] = useState()
   const [counterCorrectAnswer, setCounterCorrectAnswer] = useState(0)
   const [buttonClicked, setButtonClicked] = useState(false)
-  // i would create a state that contain an array of correct answer ids for the 
-  //question where he select the wrong one so when they click check answer button
-  // will be highlited in red the correct when when the user picke d the correct one
+ 
   useEffect(() => {
     if (started) {
       setLoading(true)
@@ -40,10 +38,7 @@ function App() {
     function generateAnswerObj(data){
       let answerOption = [...generateAnswer(data)]
       let correctAnswer = data.correct_answer
-      // console.log(correctAnswer);
-  
       const arrayObj = answerOption.map((answer, i) => {
-        // console.log(questions);
         return {
           id: nanoid(),
           answer: answer,
@@ -66,16 +61,12 @@ function App() {
     setQuestions( data.map((item) => generateQuestionObject(item)))
   }, [data])
   
-// WORK ON THE SELCT ANSWERSTATE ----------------------------------------
+
   useEffect(() => {
-      // check if selected true and add the answer id to array
       let arrayOfSelectedAnswer= []
       questions.forEach((quest) => {
-        quest.answers.forEach((ans) => {
-          
-          
+        quest.answers.forEach((ans) => {          
           if (ans.selected){
-            // console.log(ans.answer,quest.correctAnswer );
             arrayOfSelectedAnswer.push({answerId: ans.id,
                                         answer: ans.answer,
                                         questionId: quest.id,
@@ -89,8 +80,7 @@ function App() {
       setSelectedAnswer(arrayOfSelectedAnswer)
    
   }, [questions])
-// console.log(selectedAnswer);
-  
+
   
   if (loading) {
     return <p>data is loading</p>
@@ -136,12 +126,8 @@ function App() {
     setStarted(oldStart => !oldStart)
   }
 
-  // setSelectedAnswer(oldSelection => [...oldSelection, {...answ, showCorrect: true}])
-
   function CheckAnswer(){ 
     let newSelectedAnswe = []  
-    
-      // console.log(question);
       selectedAnswer.forEach((answ, i) => {    
           if (answ.correct ) {
             setCounterCorrectAnswer(oldCount => oldCount + 1)
@@ -152,15 +138,12 @@ function App() {
 
        
       })
-   
-    // console.log(newSelectedAnswe);
     setSelectedAnswer(newSelectedAnswe)
     setButtonClicked(true)
   }
-// console.log(selectedAnswer);
+
   
   const questionElements = questions.map((question, i) => {
-    // console.log(question.id);
     return <Question click={(e) => handleClick(question.id, e.target.id)}
                      key={question.id}
                      index={i}
@@ -185,7 +168,3 @@ function App() {
 
 export default App;
 
-
-// TIPS 
-// - at the generate answer obj I would add also if is the correct answer so wen click 
-// - if selected true add bcgrouncolor to green
