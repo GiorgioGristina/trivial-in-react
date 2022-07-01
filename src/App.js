@@ -122,7 +122,7 @@ function App() {
   })
   
 }
- console.log(selectedAnswer);
+//  console.log(selectedAnswer);
   function startGame(){    
     setStarted(oldStart => !oldStart)
   }
@@ -143,8 +143,22 @@ function App() {
     setButtonClicked(true)
   }
 
-  
+  console.log("data", data);
+  console.log("questions", questions);
+  console.log("selected" ,selectedAnswer);
+  console.log("count",counterCorrectAnswer);
+  console.log("button", buttonClicked);
 
+
+
+  function playAgain(){
+    setCounterCorrectAnswer(0)
+    setData([])
+    setQuestions([])
+    setSelectedAnswer([])
+    setButtonClicked(false)
+    setStarted(false)
+  }
   
   const questionElements = questions.map((question, i) => {
     return <Question click={(e) => handleClick(question.id, e.target.id)}
@@ -163,8 +177,8 @@ function App() {
       {started && questionElements}
       <div className='check-answer '>
         {buttonClicked && <p className='correct-answers'>You scored {counterCorrectAnswer}/5 correct answers</p>}
-        {started && buttonClicked && <Button  clickHandler={CheckAnswer} text={"Play again"} className="start-button"/>}
-        {started && !buttonClicked && <Button  clickHandler={} text={"Check answers"} className="start-button"/>}
+        {started && !buttonClicked && <Button  clickHandler={CheckAnswer} text={"Check answers"} className="start-button"/>}
+        {started && buttonClicked && <Button  clickHandler={playAgain} text={"Play again"} className="start-button"/>}
       </div>
     </section>
   );
