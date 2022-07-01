@@ -8,26 +8,26 @@ function Question({questionId, question, answers, click, selctedAnswer, index}) 
     
     const highlightCorrectAnswer = (answer) => {
       if (selctedAnswer.length === 5) {
-        console.log('RUNNING');
-       return answer.id === selctedAnswer[index].answerId && selctedAnswer[index].showCorrect ? "correct": ""
+        // console.log('RUNNING');
+       return answer.answer === selctedAnswer[index].rightAns && selctedAnswer[index].showCorrect ? "correct": ""
       }
 
     }
    
     const answerElements = answers.map((answer, i) => {
-    return <li key={answer.id}  id={answer.id} 
-               className={`${selected(answer)} ${highlightCorrectAnswer(answer)}`} 
+    return <p key={answer.id}  id={answer.id} 
+               className={`${selected(answer)} ${highlightCorrectAnswer(answer)} answer`} 
                onClick={click}>
                   {answer.answer}
-            </li>
+            </p>
   })
 
   return (
-    <div> 
-      <h3 >{question}</h3>
-      <ul>
+    <div className="question-container"> 
+      <h3 className="question">{question}</h3>
+      <div className="list-container">
         {answerElements}
-      </ul>
+      </div>
     </div>
   );
 }

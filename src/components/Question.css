@@ -5,3 +5,42 @@
 .correct{
   background-color: red;
 }
+/* -------------------- */
+
+.question-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border: 1px solid black;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  background-color: rgb(130, 176, 216);
+}
+
+.list-container{
+  display: flex;
+  list-style: none;
+  justify-content: space-between;
+  /* align-items: center; */
+  width: 100%;
+  margin: 15px auto;
+}
+
+.answer{
+  color: #293264;
+  font-weight: bold;
+  border: black 1px solid;
+  padding: 8px 16px;
+  border-radius: 20px;
+  /* background-color: #eceff5; */
+  margin: 0 8px;
+}
+
+.question{
+  align-self: center ;
+  color: #293264;
+  font-size: 25px;
+}

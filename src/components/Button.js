@@ -1,8 +1,9 @@
+import "./Button.css"
 
 function Button({clickHandler, text}) {
   return (
     
-    <button onClick={clickHandler}>{text}</button>
+    <button className="button" onClick={clickHandler}>{text}</button>
   );
 }
 

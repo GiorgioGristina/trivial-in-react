@@ -25,7 +25,7 @@ function App() {
       .finally(() => setLoading(false))  
     }
   }, [started])
-  console.log(data);
+  // console.log(data);
   useEffect(() => {   
     function generateAnswer(data){
       const correct = data.correct_answer
@@ -70,6 +70,7 @@ function App() {
             arrayOfSelectedAnswer.push({answerId: ans.id,
                                         answer: ans.answer,
                                         questionId: quest.id,
+                                        rightAns: quest.correctAnswer,
                                         correct: quest.correctAnswer === ans.answer,
                                         showCorrect: false
                                                 })
@@ -121,7 +122,7 @@ function App() {
   })
   
 }
-
+ console.log(selectedAnswer);
   function startGame(){    
     setStarted(oldStart => !oldStart)
   }
@@ -143,6 +144,8 @@ function App() {
   }
 
   
+
+  
   const questionElements = questions.map((question, i) => {
     return <Question click={(e) => handleClick(question.id, e.target.id)}
                      key={question.id}
@@ -155,12 +158,13 @@ function App() {
   })
 
   return (
-    <section className='container'>
+    <section className={ !started ? 'container' : 'container-quest'}>
       { !started && <Button clickHandler={startGame} text="Start Quiz" className="start-button"/>}
       {started && questionElements}
-      <div>
-        {started && <Button  clickHandler={CheckAnswer} text={buttonClicked ? "Play again" : "Check answers"} className="start-button"/>}
-        {buttonClicked && <p>You scored {counterCorrectAnswer}/5 correct answers</p>}
+      <div className='check-answer '>
+        {buttonClicked && <p className='correct-answers'>You scored {counterCorrectAnswer}/5 correct answers</p>}
+        {started && buttonClicked && <Button  clickHandler={CheckAnswer} text={"Play again"} className="start-button"/>}
+        {started && !buttonClicked && <Button  clickHandler={} text={"Check answers"} className="start-button"/>}
       </div>
     </section>
   );
